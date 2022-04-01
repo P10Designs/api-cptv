@@ -129,9 +129,9 @@ export async function getPlayers(idc){
           },
           stats: {
             pj: stats[0].children.length === 0 ? 0 : Number(stats[0].children[0].data),
-            g: stats[1].children.length === 0 ? 0 : Number(stats[0].children[0].data),
-            a: stats[2].children.length === 0 ? 0 : Number(stats[0].children[0].data),
-            pim:stats[4].children.length === 0 ? 0 : Number(stats[0].children[0].data),
+            g: stats[1].children.length === 0 ? 0 : Number(stats[0].children[1].data),
+            a: stats[2].children.length === 0 ? 0 : Number(stats[0].children[2].data),
+            pim:stats[4].children.length === 0 ? 0 : Number(stats[0].children[3].data),
           }
         })
       }catch (e) {}
