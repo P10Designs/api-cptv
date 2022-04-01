@@ -33,6 +33,32 @@ export async function getIdc(name, temp){
   return data
 }
 
+export async function getLeagueTemp(temp){
+  const {data:html} = await axios.get('http://www.server2.sidgad.es/rfep/rfep_ls_2.php')
+  const $ = load(html)
+  let data = []
+  await new Promise((resolve) => {
+    const length = $('.temp_'+temp).length
+    if (length === 0) resolve()
+    $('.temp_'+temp).each(async (i,v) => {
+      const $idc = load(v)
+      const idc = Number(v.attribs.id.trim())
+      const teamsArray = $idc('#teams_array_'+idc).attr().value.trim()
+      data.push({
+        idc: idc,
+        name: v.attribs.idc_name.trim(),
+        logo: v.attribs.logo.trim(),
+        teamsArray: teamsArray,
+      })
+      if(i === (length - 1)) resolve()
+    })
+  })
+  if (data.idc === undefined){
+    data.message = 'NOT FOUND ON THIS SEASON'
+  }
+  return data
+}
+
 
 export async function getName(idc, temp){
   const {data:html} = await axios.get('http://www.server2.sidgad.es/rfep/rfep_ls_2.php')
