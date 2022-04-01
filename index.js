@@ -2,8 +2,12 @@ import express from 'express'
 import getMatches from './functions/matches.js'
 import getLeagueData from './functions/leagues.js'
 
+import cors from 'cors'
+
 const app = express()
 const port = process.env.PORT || 9030
+
+app.use(cors())
 
 app.get('/match', async (req, res) => {
   try {
