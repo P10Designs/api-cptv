@@ -94,8 +94,8 @@ export async function getClasif(idc){
   const classif = []
   try{
     const {data:html} = await axios.get(`http://www.server2.sidgad.es/rfep/rfep_clasif_idc_${idc}_2.php`)
-    if($('tbody > tr').length === 0) throw Error
     const $ = load(html)
+    if($('tbody > tr').length === 0) throw Error
     await new Promise((resolve) => {
       const length = $('tbody > tr').length
       if (length === 0) resolve()
@@ -137,56 +137,52 @@ export async function getClasif(idc){
       })
     })
   }catch (e) {
-    const {data:html} = await axios.get(`http://www.server2.sidgad.es/rfep/rfep_cal_idc_${idc}_2.php`)
-    const $ = load(html)
-    await new Promise((resolve) => {
-      const length = $('.tabla_standard > tbody > tr').length
-      if (length === 0) resolve()
-      let table = -1
-      let tableName = ''
-      $('.tabla_standard > tbody > tr').each(async (i,v) => {
-        const $row = load(v)
-        if ($(v).attr().id === 'my_calendar_table') {
-          table += 1
-          return
-        }
-        if ($('.tabla_standard').length > 1) {
-          if (Number($row('td').first().text().trim()) === 1){
-            table += 1
-            // tableName = $('.tabla_sta')[table].children[1].children[0].children[4].data.trim()
+    try {
+      const {data:html} = await axios.get(`http://www.server2.sidgad.es/rfep/rfep_cal_idc_${idc}_2.php`)
+      const $ = load(html)
+      await new Promise((resolve) => {
+        const length = $('.tabla_standard > tbody > tr').length
+        if (length === 0) resolve()
+        let table = 1
+        $('.tabla_standard > tbody > tr').each(async (i,v) => {
+          const $row = load(v)
+          if ($('.tabla_standard').length > 1) {            
+            if (Number($row('td').first().text().trim()) === 1){
+              table += 1
+            }
           }
-        }
-        const stats = $row('.stats_table > div')
-        classif.push({
-          more: $('.tabla_standard').length > 1,
-          tabla: tableName,
-          pos: Number($row('td').first().text().trim()),
-          team:{
-            acronym: $row('.mobile').text().trim(),
-            name:$row('.no_mobile').text().trim() ,
-            logo: $row('img').attr().src.trim(),
-          },
-          stats:{
-            pts: Number($row('.stats_table_special').text().trim()),
-            bonus: Number(stats[0].children[0].data.trim()),
-            pj:Number(stats[1].children[0].data.trim()),
-            pg:Number(stats[2].children[0].data.trim()),
-            pe:Number(stats[3].children[0].data.trim()),
-            pp:Number(stats[4].children[0].data.trim()),
-            gf:Number(stats[5].children[0].data.trim()),
-            gv:Number(stats[6].children[0].data.trim()),
-            gav:Number(stats[7].children[0].data.trim()),
-            pen:Number(stats[8].children[0] === undefined ? 0 : stats[8].children[0].data.trim()),
+          const stats = $row('.stats_table > div')
+          if (stats.length < 1) return
+          classif.push({
+            more: $('.tabla_standard').length > 1,
+            tabla: table,
+            pos: Number($row('td').first().text().trim()),
+            team:{
+              acronym: $row('.mobile').text().trim(),
+              name:$row('.no_mobile').text().trim() ,
+              logo: $row('img').attr().src.trim(),
+            },
+            stats:{
+              pts: Number($row('.stats_table_special').text().trim()),
+              bonus: Number(stats[0].children[0].data.trim()),
+              pj:Number(stats[1].children[0].data.trim()),
+              pg:Number(stats[2].children[0].data.trim()),
+              pe:Number(stats[3].children[0].data.trim()),
+              pp:Number(stats[4].children[0].data.trim()),
+              gf:Number(stats[5].children[0].data.trim()),
+              gv:Number(stats[6].children[0].data.trim()),
+              gav:Number(stats[7].children[0].data.trim()),
+              pen:Number(stats[8].children[0] === undefined ? 0 : stats[8].children[0].data.trim()),
 
-          }
+            }
+          })
+          if (i === (length - 1)) resolve()
         })
-        if (i === (length - 1)) resolve()
       })
-    })
+    } catch (e){
+      
+    }
   }
   if (classif.length === 0) classif.push('NO CLASSIF')
   return classif
 }
-
-
-// COMMENT: broken for cto esp (PUTA MIERDA)

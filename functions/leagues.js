@@ -1,6 +1,6 @@
 import {getIdc, getTeams, getTemp, getPlayers, getClasif} from './constants.js'
 
-export async function getLeagueData(league_name){
+async function getLeagueData(league_name){
   const temp = await getTemp()
   let data = await getIdc(league_name, temp)
   if (data.message === undefined){
@@ -10,3 +10,5 @@ export async function getLeagueData(league_name){
   }
   return data
 }
+
+export default getLeagueData

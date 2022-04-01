@@ -1,6 +1,6 @@
 import express from 'express'
 import getMatches from './functions/matches.js'
-import {getLeagueData} from './functions/leagues.js'
+import getLeagueData from './functions/leagues.js'
 
 const app = express()
 const port = process.env.PORT || 9030
