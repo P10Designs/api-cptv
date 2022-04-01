@@ -14,6 +14,7 @@ async function getMatches(){
       const time = date[0].split('/')
       const timestamp = new Date(`${time[1]}/${time[0]}/${new Date().getUTCFullYear()} ${date[1]}`)
       matches.push({
+        idp: v.attribs.idp,
         local: {
           acronym: $match('.scorer_team_left').text().trim(),
           logo: $match('.scorer_logo_left > img').attr().src
