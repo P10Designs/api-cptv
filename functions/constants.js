@@ -119,21 +119,23 @@ export async function getPlayers(idc){
       const $row = load(v)
       try{
         const stats = $row('.stats_table')
-        players.push({
-          name: $row('a').attr().player_name.trim(),
-          id: Number($row('a').attr().id_player.trim()),
-          team:{
-            id: Number($row('a').attr().team_id.trim()),
-            acronym: $row('.texto_gris_10').text().trim(),
-            logo: $row('img').attr().src.trim()
-          },
-          stats: {
-            pj: stats[0].children.length === 0 ? 0 : Number(stats[0].children[0].data),
-            g: stats[1].children.length === 0 ? 0 : Number(stats[0].children[1].data),
-            a: stats[2].children.length === 0 ? 0 : Number(stats[0].children[2].data),
-            pim:stats[4].children.length === 0 ? 0 : Number(stats[0].children[3].data),
-          }
+        if ($row('a').length !== 0){  
+          players.push({
+            name: $row('a').attr().player_name.trim(),
+            id: Number($row('a').attr().id_player.trim()),
+            team:{
+              id: Number($row('a').attr().team_id.trim()),
+              acronym: $row('.texto_gris_10').text().trim(),
+              logo: $row('img').attr().src.trim()
+            },
+            stats: {
+              pj: stats[0].children.length === 0 ? 0 : Number(stats[0].children[0].data),
+              g: stats[1].children.length === 0 ? 0 : Number(stats[1].children[0].data),
+              a: stats[2].children.length === 0 ? 0 : Number(stats[2].children[0].data),
+              pim: stats[4].children.length === 0 ? 0 : Number(stats[4].children[0].data),
+            }
         })
+        }
       }catch (e) {}
       
       if(i === (length - 1)) resolve()
