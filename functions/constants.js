@@ -94,10 +94,10 @@ export async function getTeams(teamsArray, idc){
   const $2 = load(html2)
   $('.logo_equipo_menu_container').each(function () {
     const $t = load(this);
-    const id = Number(this.attribs.id.replace('id', "").split('_')[1])
+    const id = this.attribs.id.replace('id', "")
     const $match = $2(`.${id}`)
     const team = {
-      id,
+      id: Number(id.split('_')[1]),
       acronym: $t('.logo_equipo_menu_nombre').text(),
       logo: $match.length !== 0 ? $2(`.${id} .team_logo`)[$match.attr('class').split(' ').indexOf(id)].attribs.src : '',
       name: $match.length !== 0 ? $2(`.${id} .no_mobile`)[$match.attr('class').split(' ').indexOf(id)].children[0].data : ''
