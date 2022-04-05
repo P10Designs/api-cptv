@@ -108,21 +108,23 @@ export async function getTeams(teamsArray, idc){
 }
 
 
-export async function getPlayers(idc){
+export async function getPlayers(idc, temp){
   const players = []
   const {data:html} = await axios.post(`http://www.server2.sidgad.es/rfep/rfep_stats_2_${idc}.php`, 'tipo_stats=plantillas')
   const $ = load(html)
   await new Promise((resolve) => {
     const length = $('tbody > tr').length
     if(length === 0) resolve()
-    $('tbody > tr').each((i,v) => {
+    $('tbody > tr').each(async (i,v) => {
       const $row = load(v)
       try{
         const stats = $row('.stats_table')
         if ($row('a').length !== 0){  
+          const playerId = Number($row('a').attr().id_player.trim())
           players.push({
             name: $row('a').attr().player_name.trim(),
-            id: Number($row('a').attr().id_player.trim()),
+            id: playerId,
+            img: await playerImg(playerId, temp),
             team:{
               id: Number($row('a').attr().team_id.trim()),
               acronym: $row('.texto_gris_10').text().trim(),
@@ -239,4 +241,16 @@ export async function getClasif(idc){
   }
   if (classif.length === 0) classif.push('NO CLASSIF')
   return classif
+}
+
+
+async function playerImg(playerId, temp){
+  try {
+    const {data:html} = await axios.post(`http://www.server2.sidgad.es/rfep/rfep_profileseason_2_${temp}.php`, `id_player=${playerId}`)
+    const $ = load(html)
+    const link = $('.player_profile_picture').attr().style.split('(')[1].split(')')[0].trim()
+    return link !== undefined ? link : ''
+  }catch(e){
+    return ''
+  }
 }
