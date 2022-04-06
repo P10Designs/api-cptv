@@ -1,6 +1,6 @@
 import express from 'express'
 import getMatches from './functions/matches.js'
-import {getLeagueData, getLeagueDataIdc, getAllLeagueData} from './functions/leagues.js'
+import {getLeagueData, getLeagueDataIdc, getAllLeagueData, getLeagueSmall} from './functions/leagues.js'
 
 import cors from 'cors'
 
@@ -29,6 +29,15 @@ app.get('/league/:league_name', async (req, res) => {
   const {league_name} = req.params
   try {
     res.status(200).json(await getLeagueData(league_name))
+  } catch (error) {
+    res.status(500).json({error})
+  }
+})
+
+app.get('/league/small/:league_name', async (req, res) => {
+  const {league_name} = req.params
+  try {
+    res.status(200).json(await getLeagueSmall(league_name))
   } catch (error) {
     res.status(500).json({error})
   }

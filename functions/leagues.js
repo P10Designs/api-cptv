@@ -35,3 +35,11 @@ export async function getAllLeagueData(){
   }
   return data
 }
+export async function getLeagueData(league_name){
+  const temp = await getTemp()
+  let data = await getIdc(league_name, temp)
+  if (data.message === undefined){
+    data.teams = await getTeams(data.teamsArray, data.idc)
+  }
+  return data
+}
