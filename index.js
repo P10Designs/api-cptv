@@ -3,6 +3,7 @@ import getMatches from './functions/matches.js'
 import {getLeagueData, getLeagueDataIdc, getAllLeagueData, getLeagueSmall} from './functions/leagues.js'
 
 import cors from 'cors'
+import { getAllTempPlayers } from './functions/players.js'
 
 const app = express()
 const port = process.env.PORT || 9030
@@ -59,6 +60,14 @@ app.get('/', (req, res) => {
       '/league/:league_name'
     ]
   })
+})
+
+app.get('/players', async (req, res) => {
+  try {
+    res.status(200).json(await getAllTempPlayers())
+  } catch (error) {
+    res.status(500).json({error})
+  }
 })
 
 app.listen(port, () => {
