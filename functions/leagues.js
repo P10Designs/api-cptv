@@ -35,7 +35,7 @@ export async function getAllLeagueData(){
   }
   return data
 }
-export async function getLeagueData(league_name){
+export async function getLeagueSmall(league_name){
   const temp = await getTemp()
   let data = await getIdc(league_name, temp)
   if (data.message === undefined){
