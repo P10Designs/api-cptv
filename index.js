@@ -85,6 +85,13 @@ app.post('/app/select/:idp', async (req, res) => {
   players = []
 })
 
+app.get('/app/select', async (req, res) => {
+  res.status(200).send(idp)
+})
+app.get('/app/players', async (req, res) => {
+  res.status(200).json(players)
+})
+
 app.post('/app/players', async (req, res) => {
   players = JSON.parse(req.body)
   res.status(200).json(players)
