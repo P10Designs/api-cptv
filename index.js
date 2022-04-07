@@ -8,6 +8,8 @@ import { getAllTempPlayers } from './functions/players.js'
 
 const app = express()
 const port = process.env.PORT || 9030
+app.use(express.json());
+
 
 app.use(cors())
 
@@ -93,7 +95,7 @@ app.get('/app/players', async (req, res) => {
 })
 
 app.post('/app/players', async (req, res) => {
-  players = JSON.parse(req.body)
+  players = req.body
   res.status(200).json(players)
 })
 
