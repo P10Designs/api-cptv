@@ -76,6 +76,21 @@ app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`)
 })
 
+let idp = 0
+let players = []
+
+app.post('/app/select/:idp', async (req, res) => {
+  idp = req.params.idp
+  res.status(200).send(idp)
+  players = []
+})
+
+app.post('/app/players', async (req, res) => {
+  players = JSON.parse(req.body)
+  res.status(200).json(players)
+})
+
+
 getAllTempPlayers()
 setInterval(() => {
   getAllTempPlayers()
