@@ -1,4 +1,6 @@
 import { getTemp, getPlayers, getLeagueTemp} from './constants.js'
+import { writeFileSync } from 'fs'
+import { resolve } from 'path'
 export async function getAllTempPlayers(){
   const temp = await getTemp()
   let data = await getLeagueTemp(temp)
@@ -14,8 +16,8 @@ export async function getAllTempPlayers(){
       console.log('e')
     }
   }
-  console.log(players.length)
-  return players
+  console.log('playersDone')
+  writeFileSync(resolve('./data/players.json'), JSON.stringify(players));
 }
 
 function getObjects (obj, key, val) {

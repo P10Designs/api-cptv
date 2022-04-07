@@ -1,6 +1,7 @@
 import express from 'express'
 import getMatches from './functions/matches.js'
 import {getLeagueData, getLeagueDataIdc, getAllLeagueData, getLeagueSmall} from './functions/leagues.js'
+import {resolve} from 'path'
 
 import cors from 'cors'
 import { getAllTempPlayers } from './functions/players.js'
@@ -64,8 +65,9 @@ app.get('/', (req, res) => {
 
 app.get('/players', async (req, res) => {
   try {
-    res.status(200).json(await getAllTempPlayers())
+    res.status(200).sendFile(resolve('./data/players.json'))
   } catch (error) {
+    console.log(error)
     res.set('Cache-control', 'public, max-age=1800').status(500).json({error})
   }
 })
@@ -73,3 +75,8 @@ app.get('/players', async (req, res) => {
 app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`)
 })
+
+getAllTempPlayers()
+setInterval(() => {
+  getAllTempPlayers()
+}, 86400000)
