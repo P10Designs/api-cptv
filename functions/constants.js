@@ -143,6 +143,7 @@ export async function getPlayers(idc, temp){
       if(i === (length - 1)) resolve()
     })
   })
+  if (players.length === 0) players.push('NO PLAYERS')
   return players
 }
 
@@ -197,6 +198,7 @@ export async function getClasif(idc){
       const {data:html} = await axios.get(`http://www.server2.sidgad.es/rfep/rfep_cal_idc_${idc}_2.php`)
       const $ = load(html)
       await new Promise((resolve) => {
+        console.log('here')
         const length = $('.tabla_standard > tbody > tr').length
         if (length === 0) resolve()
         let table = 1
@@ -208,35 +210,35 @@ export async function getClasif(idc){
             }
           }
           const stats = $row('.stats_table > div')
-          if (stats.length < 1) return
-          classif.push({
-            more: $('.tabla_standard').length > 1,
-            tabla: table,
-            pos: Number($row('td').first().text().trim()),
-            team:{
-              acronym: $row('.mobile').text().trim(),
-              name:$row('.no_mobile').text().trim() ,
-              logo: $row('img').attr().src.trim(),
-            },
-            stats:{
-              pts: Number($row('.stats_table_special').text().trim()),
-              bonus: Number(stats[0].children[0].data.trim()),
-              pj:Number(stats[1].children[0].data.trim()),
-              pg:Number(stats[2].children[0].data.trim()),
-              pe:Number(stats[3].children[0].data.trim()),
-              pp:Number(stats[4].children[0].data.trim()),
-              gf:Number(stats[5].children[0].data.trim()),
-              gv:Number(stats[6].children[0].data.trim()),
-              gav:Number(stats[7].children[0].data.trim()),
-              pen:Number(stats[8].children[0] === undefined ? 0 : stats[8].children[0].data.trim()),
+          if (stats.length >= 1) {
+            classif.push({
+              more: $('.tabla_standard').length > 1,
+              tabla: table,
+              pos: Number($row('td').first().text().trim()),
+              team:{
+                acronym: $row('.mobile').text().trim(),
+                name:$row('.no_mobile').text().trim() ,
+                logo: $row('img').attr().src.trim(),
+              },
+              stats:{
+                pts: Number($row('.stats_table_special').text().trim()),
+                bonus: Number(stats[0].children[0].data.trim()),
+                pj:Number(stats[1].children[0].data.trim()),
+                pg:Number(stats[2].children[0].data.trim()),
+                pe:Number(stats[3].children[0].data.trim()),
+                pp:Number(stats[4].children[0].data.trim()),
+                gf:Number(stats[5].children[0].data.trim()),
+                gv:Number(stats[6].children[0].data.trim()),
+                gav:Number(stats[7].children[0].data.trim()),
+                pen:Number(stats[8].children[0] === undefined ? 0 : stats[8].children[0].data.trim()),
 
-            }
-          })
+              }
+            })
+          }
           if (i === (length - 1)) resolve()
         })
       })
     } catch (e){
-      
     }
   }
   if (classif.length === 0) classif.push('NO CLASSIF')
