@@ -8,7 +8,7 @@ export async function getAllTempPlayers(){
   for (let i = 0; i< data.length ; i++){
     const league = data[i]
     try {
-      const get = await getPlayers(league.idc, data)
+      const get = await getPlayers(league.idc, temp)
       get.forEach(g => {
         players.push(g)
       })
