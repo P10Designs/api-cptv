@@ -66,7 +66,7 @@ app.get('/players', async (req, res) => {
   try {
     res.status(200).json(await getAllTempPlayers())
   } catch (error) {
-    res.status(500).json({error})
+    res.set('Cache-control', 'public, max-age=1800').status(500).json({error})
   }
 })
 
