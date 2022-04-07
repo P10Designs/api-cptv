@@ -143,7 +143,6 @@ export async function getPlayers(idc, temp){
       if(i === (length - 1)) resolve()
     })
   })
-  if (players.length === 0) players.push('NO PLAYERS')
   return players
 }
 

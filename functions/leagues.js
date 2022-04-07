@@ -4,7 +4,7 @@ export async function getLeagueData(league_name){
   const temp = await getTemp()
   let data = await getIdc(league_name, temp)
   if (data.message === undefined){
-    data.teams = await getTeams(data.teamsArray, data.idc)
+    data.teams = await getTeams(data.teamsArray, data.idc)  
     data.players = await getPlayers(data.idc, temp)
     data.getClasif = await getClasif(data.idc)
   }
