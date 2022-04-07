@@ -86,7 +86,7 @@ app.post('/app/select/:idp', async (req, res) => {
 })
 
 app.get('/app/select', async (req, res) => {
-  res.status(200).send(idp)
+  res.status(200).json(idp)
 })
 app.get('/app/players', async (req, res) => {
   res.status(200).json(players)
