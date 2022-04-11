@@ -80,6 +80,7 @@ app.listen(port, () => {
 
 let idp = 0
 let players = []
+let matchData = {}
 
 app.post('/app/select/:idp', async (req, res) => {
   idp = req.params.idp
@@ -97,6 +98,24 @@ app.get('/app/players', async (req, res) => {
 app.post('/app/players', async (req, res) => {
   players = req.body
   res.status(200).json(players)
+})
+
+app.post('/app/data', async (req, res) => {
+  matchData = req.body
+  res.json(matchData)
+})
+
+app.get('/app/data', async (req, res) => {
+  res.json(matchData)
+})
+
+app.get('/app/match', async (req, res) => {
+  res.status(200).json(matchData)
+})
+
+app.post('/app/match', async (req, res) => {
+  matchData = req.body
+  res.status(200).json(matchData)
 })
 
 
