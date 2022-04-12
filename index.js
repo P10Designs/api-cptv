@@ -102,7 +102,6 @@ app.post('/app/players', async (req, res) => {
 
 app.post('/app/data', async (req, res) => {
   matchData = req.body
-  console.log(matchData, req.body)
   res.json(matchData)
 })
 
