@@ -23,7 +23,7 @@ async function getMatches(){
           acronym: $match('.scorer_team_right').text().trim(),
           logo: $match('.scorer_logo_right > img').attr().src
         },
-        league: $match('.scorer_liga').text().trim(),
+        league: $match('.scorer_liga').text().trim().indexOf('PLAY-OFF') !== -1 ? $match('.scorer_liga').text().trim().indexOf('EM') !== -1 ? 'LIGA ÉLITE MASCULINA' : 'LIGA ÉLITE IBERDROLA' : $match('.scorer_liga').text().trim(),
         period: $match('.scorer_bot_center').text().trim(),
         sede: $match('.scorer_bot_right').text().trim().replace('SEDE ','').replace('…', '').trim(),
         date: timestamp.toISOString(),
