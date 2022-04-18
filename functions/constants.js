@@ -155,20 +155,11 @@ export async function getClasif(idc){
     await new Promise((resolve) => {
       const length = $('tbody > tr').length
       if (length === 0) resolve()
-      let table = -1
-      let tableName = ''
       $('tbody > tr').each(async (i,v) => {
         const $row = load(v)
-        if ($('.tabla_standard').length > 1) {
-          if (Number($row('td').first().text().trim()) === 1){
-            table += 1
-            tableName = $('thead')[table].children[1].children[0].children[4].data.trim()
-          }
-        }
         const stats = $row('.stats_table > div')
         classif.push({
           more: $('.tabla_standard').length > 1,
-          tabla: tableName,
           pos: Number($row('td').first().text().trim()),
           team:{
             acronym: $row('.mobile').text().trim(),

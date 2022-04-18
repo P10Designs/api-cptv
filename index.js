@@ -6,6 +6,11 @@ import {resolve} from 'path'
 import cors from 'cors'
 import { getAllTempPlayers } from './functions/players.js'
 
+const special = {
+  'EM - PLAY-OFF': 'LIGA ÉLITE MASCULINA',
+  'EF - PLAY-OFF': 'LIGA ÉLITE IBERDROLA',
+}
+
 const app = express()
 const port = process.env.PORT || 9030
 app.use(express.json());
@@ -30,7 +35,7 @@ app.get('/league', async (req, res) => {
 })
 
 app.get('/league/:league_name', async (req, res) => {
-  const {league_name} = req.params
+  const {league_name} = req.params 
   try {
     res.status(200).json(await getLeagueData(league_name))
   } catch (error) {
@@ -56,7 +61,7 @@ app.get('/league/idc/:idc', async (req, res) => {
   }
 })
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => {
   res.json({
     routes:[
       '/match',
