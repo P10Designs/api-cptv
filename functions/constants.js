@@ -146,6 +146,48 @@ export async function getPlayers(idc, temp){
   return players
 }
 
+export async function getGoalies(idc, temp){
+  const players = []
+  try{
+    const {data:html} = await axios.post(`http://www.server2.sidgad.es/rfep/rfep_stats_2_${idc}.php`, 'tipo_stats=goalies')
+    const $ = load(html)
+    await new Promise((resolve) => {
+      const length = $('tbody > tr').length
+      if(length === 0) resolve()
+      $('tbody > tr').each(async (i,v) => {
+        const $row = load(v)
+        try{
+          const stats = $row('.stats_table')
+          if ($row('a').length !== 0){  
+            const playerId = Number($row('a').attr().id_player.trim())
+            players.push({
+              name: $row('a').attr().player_name.trim(),
+              id: playerId,
+              img: await playerImg(playerId, temp),
+              team:{
+                id: Number($row('a').attr().team_id.trim()),
+                acronym: $row('.texto_gris_10').text().trim(),
+                logo: $row('img').attr().src.trim()
+              },
+              stats: {
+                pj: stats[0].children.length === 0 ? 0 : Number(stats[0].children[0].data),
+                g: stats[1].children.length === 0 ? 0 : Number(stats[1].children[0].data),
+                a: stats[2].children.length === 0 ? 0 : Number(stats[2].children[0].data),
+                pim: stats[4].children.length === 0 ? 0 : Number(stats[4].children[0].data),
+              }
+          })
+          }
+        }catch (e) {}
+        if(i === (length - 1)) resolve()
+      })
+    })
+  }catch (e) {
+    
+  }
+  
+  return players
+}
+
 export async function getClasif(idc){
   const classif = []
   try{

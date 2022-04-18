@@ -1,4 +1,4 @@
-import { getTemp, getPlayers, getLeagueTemp} from './constants.js'
+import { getTemp, getPlayers, getLeagueTemp, getGoalies} from './constants.js'
 import { writeFileSync } from 'fs'
 import { resolve } from 'path'
 export async function getAllTempPlayers(){
@@ -12,8 +12,12 @@ export async function getAllTempPlayers(){
       get.forEach(g => {
         players.push(g)
       })
+      const por = await getGoalies(league.idc, temp)
+      por.forEach(g => {
+        players.push(g)
+      })
     } catch (e) {
-      console.log('e')
+      console.log(e)
     }
   }
   console.log('playersDone')
