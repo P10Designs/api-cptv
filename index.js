@@ -6,11 +6,6 @@ import {resolve} from 'path'
 import cors from 'cors'
 import { getAllTempPlayers } from './functions/players.js'
 
-const special = {
-  'EM - PLAY-OFF': 'LIGA ÉLITE MASCULINA',
-  'EF - PLAY-OFF': 'LIGA ÉLITE IBERDROLA',
-}
-
 const app = express()
 const port = process.env.PORT || 9030
 app.use(express.json());
@@ -20,7 +15,7 @@ app.use(cors())
 
 app.get('/match', async (req, res) => {
   try {
-    res.status(200).json(await getMatches())
+    res.status(200).set('Cache-Control', 'public, max-age=1800').json(await getMatches())
   } catch (error) {
     res.status(500).json({error})
   }
@@ -72,7 +67,7 @@ app.get('/', (req, res) => {
 
 app.get('/players', async (req, res) => {
   try {
-    res.status(200).sendFile(resolve('./data/players.json'))
+    res.status(200).set('Cache-control', 'public, max-age=1800').sendFile(resolve('./data/players.json'))
   } catch (error) {
     console.log(error)
     res.set('Cache-control', 'public, max-age=1800').status(500).json({error})
