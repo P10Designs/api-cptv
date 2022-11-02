@@ -5,7 +5,7 @@ export async function getLeagueData(league_name){
   let data = await getIdc(league_name, temp)
   if (data.message === undefined){
     data.teams = await getTeams(data.teamsArray, data.idc)
-    data.players = await getPlayers(data.idc, temp)
+    // data.players = await getPlayers(data.idc, temp)
     data.getClasif = await getClasif(data.idc)
   }
   return data
@@ -17,7 +17,7 @@ export async function getLeagueDataIdc(idc){
   let data = await getName(idc, temp)
   if (data.message === undefined){
     data.teams = await getTeams(data.teamsArray, data.idc)
-    data.players = await getPlayers(data.idc, temp)
+    // data.players = await getPlayers(data.idc, temp)
     data.getClasif = await getClasif(data.idc)
   }
   return data
