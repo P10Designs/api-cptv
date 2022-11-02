@@ -2,7 +2,7 @@ import axios from "axios"
 import { load } from "cheerio"
 
 export async function getTemp(){
-  const {data:html} = await axios.get('http://hockeylinea.fep.es')
+  const { data:html } = await axios.get('http://hockeylinea.fep.es')
   const $ = load(html)
  return $('#temp_activa').attr().value
 }
@@ -113,15 +113,14 @@ export async function getTeams(teamsArray, idc){
 
 
 export async function getPlayers(idc, temp){
-  const players = []
-  try {
-    const {data:html} = await axios.post(`http://www.server2.sidgad.es/rfep/rfep_stats_2_${idc}.php`, 'tipo_stats=plantillas')
+    const players = []
+    const { data:html } = await axios.post(`http://www.server2.sidgad.es/rfep/rfep_stats_2_${idc}.php`, 'tipo_stats=plantillas')
     const $ = load(html)
-    await new Promise((resolve) => {
-      const length = $('tbody > tr').length
-      if(length === 0) resolve()
-      $('tbody > tr').each(async (i,v) => {
-        const $row = load(v)
+
+    const data = $('tbody > tr')
+    for (let i = 0 ; i < data.length; i++){
+      const v = data[i]
+      const $row = load(v)
         try{
           const stats = $row('.stats_table')
           if ($row('a').length !== 0){  
@@ -141,17 +140,11 @@ export async function getPlayers(idc, temp){
                 a: stats[2].children.length === 0 ? 0 : Number(stats[2].children[0].data),
                 pim: stats[4].children.length === 0 ? 0 : Number(stats[4].children[0].data),
               }
-          })
+            })
           }
         }catch (e) {}
-        
-        if(i === (length - 1)) resolve()
-      })
-    })
-  } catch (error) {
-    players = []
-  }
-  return players
+    }
+    return players
 }
 
 export async function getClasif(idc){
