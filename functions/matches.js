@@ -1,6 +1,8 @@
 import axios from "axios"
 import { load } from "cheerio"
 
+axios.defaults.headers.common.origin = 'http://fep.es'
+
 async function getMatches(){
   const matches = []
   const {data:html} = await axios.get('http://www.server2.sidgad.es/rfep/rfep_mc_2.php')

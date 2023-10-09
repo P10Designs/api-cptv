@@ -1,6 +1,8 @@
 import axios from "axios"
 import { load } from "cheerio"
 
+axios.defaults.headers.common.origin = 'http://fep.es'
+
 export async function getTemp(){
   const { data:html } = await axios.get('http://hockeylinea.fep.es')
   const $ = load(html)
