@@ -6,7 +6,9 @@ axios.defaults.headers.common.origin = 'http://fep.es'
 export async function getTemp(){
   const { data:html } = await axios.get('http://hockeylinea.fep.es')
   const $ = load(html)
- return $('#temp_activa').attr().value
+
+  console.log($('#temp_activa').attr().value)
+  return $('#temp_activa').attr().value
 }
 
 export async function getIdc(name, temp){
@@ -78,6 +80,8 @@ export async function getName(idc, temp){
         data.logo = v.attribs.logo.trim()
         data.teamsArray = teamsArray
       }
+
+      console.log(v.attribs.id)
       if(i === (length - 1)) resolve()
     })
   })
