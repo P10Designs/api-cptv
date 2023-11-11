@@ -11,7 +11,7 @@ app.use(cors())
 
 app.get('/match', async (req, res) => {
   try {
-    res.status(200).json(await getMatches()).header('Cache-Control', 'max-age=172800')
+    res.status(200).header('Cache-Control', 'max-age=172800').json(await getMatches())
   } catch (error) {
     res.status(500).json({error})
   }
@@ -19,7 +19,7 @@ app.get('/match', async (req, res) => {
 
 app.get('/league', async (req, res) => {
   try {
-    res.status(200).json(await getAllLeagueData()).header('Cache-Control', 'max-age=172800')
+    res.status(200).header('Cache-Control', 'max-age=172800').json(await getAllLeagueData())
   } catch (error) {
     res.status(500).json({error})
   }
@@ -29,7 +29,7 @@ app.get('/league/:league_name', async (req, res) => {
   const {league_name} = req.params
   try {
     // cache 2 dias
-    res.status(200).json(await getLeagueData(league_name)).header('Cache-Control', 'max-age=172800')
+    res.status(200).header('Cache-Control', 'max-age=172800').json(await getLeagueData(league_name))
   } catch (error) {
     res.status(500).json({error})
   }
@@ -38,7 +38,7 @@ app.get('/league/:league_name', async (req, res) => {
 app.get('/league/idc/:idc', async (req, res) => {
   const { idc } = req.params
   try {
-    res.status(200).json(await getLeagueDataIdc(idc)).header('Cache-Control', 'max-age=172800')
+    res.status(200).header('Cache-Control', 'max-age=172800').json(await getLeagueDataIdc(idc))
   } catch (error) {
     res.status(500).json({error})
   }
